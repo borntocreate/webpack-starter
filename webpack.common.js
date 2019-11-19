@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
     entry: {
-        main: "./src/main.js",
+        main: "./src/main.ts",
     },
     output: {
         filename: "[name].dist.js",
@@ -14,11 +14,27 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.ts(x?)$/,
+                exclude: /node_modules/,
+                use: [{
+                    loader: "ts-loader"
+                }]
+            },
+            {
+                enforce: "pre",
+                test: /\.js$/,
+                loader: "source-map-loader"
+            },
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: "babel-loader"
             }
         ]
+    },
+    resolve: {
+        // Add '.ts' and '.tsx' as resolvable extensions.
+        extensions: [".ts", ".tsx"]
     },
     plugins: [
         new CleanWebpackPlugin(),
